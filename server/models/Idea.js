@@ -1,5 +1,20 @@
 import mongoose from 'mongoose'
 
+const validationReportSchema = new mongoose.Schema(
+  {
+    overallScore:      { type: Number, required: true, min: 0, max: 100 },
+    problemClarity:    { type: Number, required: true, min: 0, max: 100 },
+    targetAudienceFit: { type: Number, required: true, min: 0, max: 100 },
+    marketPotential:   { type: Number, required: true, min: 0, max: 100 },
+    strengths:  { type: [String], default: [] },
+    risks:      { type: [String], default: [] },
+    nextSteps:  { type: [String], default: [] },
+    summary:    { type: String, required: true, trim: true },
+    generatedAt: { type: Date, required: true },
+  },
+  { _id: false }
+)
+
 const ideaSchema = new mongoose.Schema(
   {
     owner: {
@@ -36,6 +51,11 @@ const ideaSchema = new mongoose.Schema(
       type: String,
       enum: ['draft', 'validated', 'rejected'],
       default: 'draft',
+    },
+    // Populated by POST /api/ideas/:id/validate — absent on draft ideas
+    validationReport: {
+      type: validationReportSchema,
+      default: undefined,
     },
   },
   { timestamps: true }

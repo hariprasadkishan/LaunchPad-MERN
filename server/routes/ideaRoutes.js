@@ -6,6 +6,7 @@ import {
   getIdea,
   updateIdea,
   deleteIdea,
+  validateIdea,
 } from '../controllers/ideaController.js'
 
 const router = Router()
@@ -15,5 +16,6 @@ router.use(protect)
 
 router.route('/').get(getIdeas).post(createIdea)
 router.route('/:id').get(getIdea).put(updateIdea).delete(deleteIdea)
+router.post('/:id/validate', validateIdea)
 
 export default router

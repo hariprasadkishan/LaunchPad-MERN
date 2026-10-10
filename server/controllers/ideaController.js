@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import Idea from '../models/Idea.js'
+import { generateValidationReport, ConfigError, AIValidationError, AIProviderError } from '../services/aiService.js'
 
 /** Reusable ObjectId validator — returns 400 before hitting the DB */
 function assertValidId(id, res) {
@@ -95,6 +96,44 @@ export async function deleteIdea(req, res, next) {
     if (!idea) return res.status(404).json({ message: 'Idea not found' })
 
     res.json({ message: 'Idea deleted' })
+  } catch (err) {
+    next(err)
+  }
+}
+
+// ── POST /api/ideas/:id/validate ──────────────────────────────────────────────
+export async function validateIdea(req, res, next) {
+  try {
+    if (!assertValidId(req.params.id, res)) return
+
+    const idea = await Idea.findOne({ _id: req.params.id, owner: req.user._id })
+    if (!idea) return res.status(404).json({ message: 'Idea not found' })
+
+    // Generate and fully validate the report BEFORE touching the DB document.
+    // If this throws, the idea's existing status and report are preserved.
+    let report
+    try {
+      report = await generateValidationReport(idea)
+    } catch (aiErr) {
+      if (aiErr instanceof ConfigError) {
+        return res.status(500).json({ message: aiErr.message })
+      }
+      if (aiErr instanceof AIValidationError) {
+        return res.status(500).json({ message: `AI returned an invalid response: ${aiErr.message}` })
+      }
+      if (aiErr instanceof AIProviderError) {
+        return res.status(502).json({ message: aiErr.message })
+      }
+      // Unknown error — let global handler deal with it
+      throw aiErr
+    }
+
+    // Report is valid — now update the document
+    idea.validationReport = report
+    idea.status = 'validated'
+    await idea.save()
+
+    res.json(idea)
   } catch (err) {
     next(err)
   }
