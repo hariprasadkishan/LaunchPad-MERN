@@ -5,6 +5,8 @@ import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
+import IdeaFormPage from './pages/IdeaFormPage'
+import IdeaDetailPage from './pages/IdeaDetailPage'
 
 export default function App() {
   return (
@@ -19,6 +21,30 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ideas/new"
+            element={
+              <ProtectedRoute>
+                <IdeaFormPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ideas/:id"
+            element={
+              <ProtectedRoute>
+                <IdeaDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ideas/:id/edit"
+            element={
+              <ProtectedRoute>
+                <IdeaFormPage />
               </ProtectedRoute>
             }
           />

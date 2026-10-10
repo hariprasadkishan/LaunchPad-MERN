@@ -4,6 +4,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import { connectDB } from './config/db.js'
 import authRoutes from './routes/authRoutes.js'
+import ideaRoutes from './routes/ideaRoutes.js'
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -30,6 +31,7 @@ app.get('/api/health', (_req, res) => {
 })
 
 app.use('/api/auth', authRoutes)
+app.use('/api/ideas', ideaRoutes)
 
 // 404 handler
 app.use((_req, res) => {
