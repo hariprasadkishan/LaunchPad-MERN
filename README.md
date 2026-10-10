@@ -16,9 +16,8 @@ LaunchPad is a full-stack MERN application that helps founders and early-stage e
 6. [Running the Application](#running-the-application)
 7. [API Reference](#api-reference)
 8. [Testing](#testing)
-9. [GitHub Repository](#github-repository)
-10. [AI Development Experience](#ai-development-experience)
-11. [AI Disclaimer](#ai-disclaimer)
+9. [AI Development Experience](#ai-development-experience)
+10. [AI Disclaimer](#ai-disclaimer)
 
 ---
 
@@ -392,14 +391,6 @@ npm run build
 ✓ 91 modules transformed
 ✓ built in ~1s
 ```
-
----
-
-## GitHub Repository
-
-**[https://github.com/hariprasadkishan/LaunchPad-MERN](https://github.com/hariprasadkishan/LaunchPad-MERN)**
-
-> Verify the repository visibility is set to **Public** in GitHub Settings before submission.
 
 ---
 
